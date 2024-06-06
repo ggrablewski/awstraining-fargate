@@ -1,9 +1,12 @@
 package com.awstraining.backend.business.notifyme;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotifyMeService {
+
+    private MessageSender messageSender;
 
     // TODO: lab1
     //  1. Inject MessageSender.
@@ -11,9 +14,9 @@ public class NotifyMeService {
     //  1. Inject Translator
     // TODO lab3
     //  1. Inject sentiment detector
-//    @Autowired
-    public NotifyMeService() {
-
+    @Autowired
+    public NotifyMeService(MessageSender messageSender) {
+        this.messageSender = messageSender;
     }
     
     public String notifyMe(NotifyMeDO notifyMe) {
@@ -27,7 +30,9 @@ public class NotifyMeService {
         // TODO: lab3
         //  1. Detect sentiment of translated message.
         //  2. Change sending of text to "setiment: translated text" and return it.
-        return "This service is not available.";
+        final String text = notifyMe.text();
+        messageSender.send(text);
+        return text;
     }
     
 }
